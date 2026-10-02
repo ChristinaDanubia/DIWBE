@@ -1,0 +1,53 @@
+import { useState } from "react";
+
+
+
+import Header from "./assets/components/header";
+import Footer from "./assets/components/footer";
+
+const App = () => {
+
+    const[regiao, setRegiao] = useState("");
+    const[cep, setCep] = useState("");
+    const[localidade, setLocalidade] = useState("");
+    const[bairro, setBairro] = useState("");
+    const[logradouro, setLogradouro] = useState("");
+    const[estado, setEstado] = useState("");
+
+
+
+    function Buscar_cep(){
+      fetch("https://viacep.com.br/ws/" +cep+"/json")
+      .then((response) => response.json())
+      .then((data) => {
+        setLocalidade(data.localidade);
+        setBairro(data.bairro);
+        setLogradouro(data.logradouro);
+        setEstado(data.estado);
+        setRegiao(data.regiao);
+      });
+
+
+    }
+
+    return (
+        <>
+            <Header titulo="Consumer API" versao="1.0" />
+            <input
+              type="text"
+              value={cep}
+              onChange={(e) => setCep(e.target.value)}
+            />
+
+            <input type="button" value="Consultar" onClick={() => Buscar_cep()} />
+            <h3>O endereço é {logradouro +" - " + bairro +", " + localidade+ "- " + estado}</h3>
+                            
+               
+           
+
+            <Footer />
+        </>
+    );
+};
+
+export default App;
